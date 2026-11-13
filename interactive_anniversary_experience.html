@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Anniversary, Baby</title>
+  <!-- Load Tailwind CSS for clean, responsive utility styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & Playfair Display for soft editorial romance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,400&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            blush: {
+              light: '#FFE4EC',
+              DEFAULT: '#FFB6C1',
+              dark: '#F48FB1'
+            },
+            babyblue: {
+              light: '#D6EEFF',
+              DEFAULT: '#89CFF0',
+              dark: '#5BB5E5'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Playfair Display', 'serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* Custom minimal animations & interactive card states */
+    body {
+      background: linear-gradient(135deg, #FFE4EC 0%, #FFFFFF 50%, #D6EEFF 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Envelope Opening Animation */
+    .envelope-wrapper {
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .envelope-wrapper.opened {
+      opacity: 0;
+      transform: scale(1.06) translateY(-20px);
+      pointer-events: none;
+    }
+
+    .envelope-flap {
+      transform-origin: top;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .envelope-card:hover .envelope-flap,
+    .envelope-card.opening .envelope-flap {
+      transform: rotateX(180deg);
+    }
+
+    /* Smooth Tab Content Reveal */
+    .tab-panel {
+      display: none;
+      animation: fadeSlideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .tab-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Interactive Flower Bloom Transition */
+    .flower-btn {
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+    }
+    .flower-btn:hover {
+      transform: translateY(-4px) scale(1.03);
+    }
+    .flower-btn.bloomed .flower-icon {
+      transform: scale(1.22) rotate(12deg);
+    }
+    .flower-icon {
+      transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* Falling Petal Shower Animation */
+    .falling-petal {
+      position: fixed;
+      top: -40px;
+      pointer-events: none;
+      z-index: 60;
+      animation: petalFall linear forwards;
+    }
+
+    @keyframes petalFall {
+      0% {
+        transform: translateY(0) rotate(0deg) translateX(0);
+        opacity: 1;
+      }
+      50% {
+        transform: translateY(50vh) rotate(180deg) translateX(25px);
+      }
+      100% {
+        transform: translateY(105vh) rotate(360deg) translateX(-20px);
+        opacity: 0;
+      }
+    }
+
+    /* Love Letter Unfold Paper Effect */
+    .letter-sheet {
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+  </style>
+</head>
+<body class="text-slate-700 antialiased selection:bg-blush-light selection:text-slate-800">
+
+  <!-- =========================================================
+       1. GENTLE OPENING ENVELOPE SCREEN
+       ========================================================= -->
+  <div id="openingScreen" class="envelope-wrapper fixed inset-0 z-50 flex flex-col items-center justify-center p-6 bg-gradient-to-br from-[#FFE4EC] via-white to-[#D6EEFF]">
+    <div class="text-center mb-6">
+      <span class="inline-block px-3.5 py-1 rounded-full text-xs font-medium tracking-wider uppercase bg-white/80 text-slate-500 border border-blush/50 shadow-sm">
+        For You
+      </span>
+    </div>
+
+    <!-- Interactive Envelope Card -->
+    <button id="openEnvelopeBtn" aria-label="Tap to Open Anniversary Card" class="envelope-card group relative w-full max-w-sm aspect-[4/3] bg-white rounded-3xl shadow-xl border-2 border-blush/60 flex flex-col items-center justify-center p-6 cursor-pointer focus:outline-none focus:ring-4 focus:ring-babyblue/50">
+      <!-- Top Envelope Flap SVG -->
+      <svg class="envelope-flap absolute top-0 left-0 w-full h-1/2 text-blush-light drop-shadow-sm pointer-events-none" viewBox="0 0 400 150" preserveAspectRatio="none">
+        <path d="M0,0 L200,135 L400,0 Z" fill="currentColor" />
+      </svg>
+
+      <!-- Subtle Baby Blue Bottom Accent -->
+      <svg class="absolute bottom-0 left-0 w-full h-1/2 text-babyblue-light/50 rounded-b-3xl pointer-events-none" viewBox="0 0 400 150" preserveAspectRatio="none">
+        <path d="M0,150 L200,30 L400,150 Z" fill="currentColor" />
+      </svg>
+
+      <!-- Center Wax Seal / Heart Trigger -->
+      <div class="relative z-10 flex flex-col items-center mt-4">
+        <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-blush to-babyblue flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
+          <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        </div>
+        <h1 class="font-serif text-2xl sm:text-3xl text-slate-800 mt-4">Happy Anniversary</h1>
+        <p class="text-sm text-slate-500 mt-1.5 font-medium tracking-wide group-hover:text-slate-700 transition-colors">
+          Tap to Open
+        </p>
+      </div>
+    </button>
+  </div>
+
+  <!-- =========================================================
+       2. MAIN EXPERIENCE CONTAINER (HIDDEN UNTIL ENVELOPE OPENS)
+       ========================================================= -->
+  <main id="mainExperience" class="hidden max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+    
+    <!-- Minimal Header -->
+    <header class="text-center mb-8">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 border border-blush/50 shadow-sm text-xs font-medium text-slate-500 mb-3">
+        <span class="w-2 h-2 rounded-full bg-blush-dark"></span>
+        <span id="headerDateDisplay">Our Special Day</span>
+        <span class="w-2 h-2 rounded-full bg-babyblue-dark"></span>
+      </div>
+      <h2 class="font-serif text-3xl sm:text-4xl text-slate-800 tracking-tight">
+        Celebrating Us
+      </h2>
+    </header>
+
+    <!-- Three Clean Clickable Navigation Tabs -->
+    <nav aria-label="Anniversary Sections" class="grid grid-cols-3 gap-2 sm:gap-3 bg-white/80 backdrop-blur-md p-2 rounded-2xl shadow-sm border border-white mb-8 max-w-xl mx-auto">
+      <button data-tab="memories" class="tab-btn active flex items-center justify-center gap-2 py-3 px-3 sm:px-4 rounded-xl text-sm font-medium transition-all duration-200 bg-babyblue-light text-slate-800 shadow-sm">
+        <span>📸</span>
+        <span>Memories</span>
+      </button>
+      <button data-tab="flowers" class="tab-btn flex items-center justify-center gap-2 py-3 px-3 sm:px-4 rounded-xl text-sm font-medium text-slate-600 hover:bg-blush-light/50 transition-all duration-200">
+        <span>🌸</span>
+        <span>Flowers</span>
+      </button>
+      <button data-tab="letter" class="tab-btn flex items-center justify-center gap-2 py-3 px-3 sm:px-4 rounded-xl text-sm font-medium text-slate-600 hover:bg-babyblue-light/50 transition-all duration-200">
+        <span>✉️</span>
+        <span>Love Letter</span>
+      </button>
+    </nav>
+
+    <!-- =======================================================
+         TAB 1: MEMORIES (9 UPLOADED PHOTOS + LIGHTBOX)
+         ======================================================= -->
+    <section id="tab-memories" class="tab-panel active">
+      <div class="text-center mb-6">
+        <p class="text-xs uppercase tracking-widest text-slate-400 font-medium">Tap any photo to enlarge</p>
+      </div>
+
+      <div id="galleryGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5">
+        <!-- Photo cards are rendered cleanly via JavaScript using the exact 9 filenames -->
+      </div>
+    </section>
+
+    <!-- =======================================================
+         TAB 2: FLOWERS (INTERACTIVE BOUQUET + SHOWER)
+         ======================================================= -->
+    <section id="tab-flowers" class="tab-panel">
+      <div class="bg-white/90 rounded-3xl p-6 sm:p-8 shadow-sm border border-blush/40 text-center">
+        <h3 class="font-serif text-2xl text-slate-800">A Digital Bouquet For You</h3>
+
+        <!-- Interactive Flower Garden Grid (Minimalist Blooms Only) -->
+        <div id="flowerGarden" class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 my-6">
+          <!-- Flowers populated by JS -->
+        </div>
+
+        <!-- Virtual Flower Shower Button -->
+        <button id="flowerShowerBtn" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-blush to-babyblue text-white font-medium text-sm shadow-md hover:shadow-lg active:scale-95 transition-all cursor-pointer">
+          <span>✨ Send a Flower Shower</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- =======================================================
+         TAB 4: LOVE LETTER (UNFOLDING CARD + PERSONALIZE)
+         ======================================================= -->
+    <section id="tab-letter" class="tab-panel">
+      <div class="max-w-2xl mx-auto">
+        <!-- Top Action Bar: Fold/Unfold & Personalize Toggle -->
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+          <button id="toggleFoldBtn" class="px-4 py-2 rounded-full bg-white text-slate-600 text-xs font-medium border border-slate-200 hover:bg-blush-light/50 transition-colors cursor-pointer">
+            Fold Letter
+          </button>
+          <button id="toggleEditBtn" class="px-4 py-2 rounded-full bg-babyblue-light text-slate-700 text-xs font-medium border border-babyblue/50 hover:bg-babyblue/30 transition-colors cursor-pointer">
+            ✎ Personalize Letter
+          </button>
+        </div>
+
+        <!-- Folded State Preview (Shown when user folds letter) -->
+        <div id="foldedLetterView" class="hidden bg-white rounded-3xl p-8 border-2 border-dashed border-blush text-center shadow-sm cursor-pointer">
+          <div class="w-12 h-12 rounded-full bg-blush-light text-blush-dark flex items-center justify-center mx-auto mb-3 text-xl">
+            💌
+          </div>
+          <p class="font-serif text-xl text-slate-800">A Letter For <span class="recipient-name">Baby reirei</span></p>
+          <p class="text-xs text-slate-400 mt-1">Tap to unfold and read</p>
+        </div>
+
+        <!-- Unfolded Letter Sheet -->
+        <div id="unfoldedLetterView" class="letter-sheet bg-white rounded-3xl p-6 sm:p-10 shadow-md border border-blush/50 relative overflow-hidden">
+          <!-- Soft corner accents -->
+          <div class="absolute top-0 right-0 w-24 h-24 bg-babyblue-light/40 rounded-bl-full pointer-events-none"></div>
+          <div class="absolute bottom-0 left-0 w-24 h-24 bg-blush-light/40 rounded-tr-full pointer-events-none"></div>
+
+          <!-- Read Mode -->
+          <div id="letterReadMode" class="relative z-10 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <p class="font-serif italic text-lg text-slate-700">
+                Dearest <span id="displayRecipient" class="font-semibold text-slate-900">Baby reirei</span>,
+              </p>
+              <span id="displayDate" class="text-xs text-slate-400 font-medium">Happy Anniversary</span>
+            </div>
+
+            <div id="displayBody" class="text-sm sm:text-base text-slate-600 leading-relaxed whitespace-pre-line py-2">
+                hii baby, i'm gonna be honest right rn. you know before kala ko sa mga ganto ay cringe eh, hindi pala. i'm sorry kasi you know late na yung pa ganto ko, medjo na busy kasi bebe eh:< 
+                <br>
+                WAHAHAHAAHAHAHAHAHAHAAHAHAHAHA (im shy huhu) I honestly can't put into words kung gaano kita ka love love. you know from the moment you walked into my life everything changed, lahattttt as in. you changed something in me, something quiet, and something like hindi ko inaakala na magiging ganto. you understood me in ways no one ever had, as if you could read the parts of me i never knew how to explain. with you, i felt a kind of love i had never known before, something soft and certain all at once. there was a comfort in you that i had spent years looking for, a sense of being seen without needing to ask for it. even the smallest moments felt full, like they carried more meaning than they should have. it was something rare, something i didn’t know i needed until i found it in you.
+                <br>
+                sa totoo lang, loving you has made me braver wahahahaha solid. it also scares me sometimes because i know may mga mistakes naman talaga tayo nagagawa and di naman natin talaga want na mangyare. but i'd choose this feeling naman every single time, bcuz syempre you are my sweetest baby—my heart’s favorite place to be. and with you, i've found comfort, laughter, support, and a kind of connection that feels like it was written in the stars. you've shown me what is truly means to be seen. to be loved without conditions, and to grow with someone hand in hand. you're the first person who make me feel like I'm enough and the first one to show me what I love you actually mean. 
+                <br>
+                from the bottom if my heart, i want you to know that you're the most beautiful girl i've ever seen, andd i hope you never forget how perfect you are. i love youuu, mwapppss!!!
+            </div>
+          
+
+            <div class="pt-4 border-t border-slate-100 flex items-end justify-between">
+              <div>
+                <p class="text-xs text-slate-400">From:</p>
+                <p id="displaySender" class="font-serif text-lg text-slate-800 mt-0.5">jaijaiii</p>
+              </div>
+              <button id="copyShareBtn" class="px-3.5 py-2 rounded-xl bg-blush-light/70 hover:bg-blush-light text-slate-700 text-xs font-medium transition-colors cursor-pointer">
+                Copy Note to Share
+              </button>
+            </div>
+          </div>
+
+          <!-- Edit / Personalize Mode -->
+          <form id="letterEditMode" class="hidden relative z-10 space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-medium text-slate-500 mb-1">Recipient Name</label>
+                <input type="text" id="inputRecipient" value="My Love" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-babyblue" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-slate-500 mb-1">Date / Occasion</label>
+                <input type="text" id="inputDate" value="Happy Anniversary" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-babyblue" />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-slate-500 mb-1">Your Message</label>
+              <textarea id="inputBody" rows="6" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm leading-relaxed focus:outline-none focus:border-babyblue"></textarea>
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-slate-500 mb-1">Sign-off / Your Name</label>
+              <input type="text" id="inputSender" value="Always Yours ♥" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-babyblue" />
+            </div>
+
+            <div class="flex justify-end gap-2 pt-2">
+              <button type="button" id="cancelEditBtn" class="px-4 py-2 rounded-xl text-xs font-medium text-slate-500 hover:bg-slate-100 cursor-pointer">
+                Cancel
+              </button>
+              <button type="submit" class="px-5 py-2 rounded-xl bg-gradient-to-r from-blush to-babyblue text-white text-xs font-medium shadow-sm hover:opacity-95 cursor-pointer">
+                Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Subtle Toast Notification (Replaces alert) -->
+    <div id="toastNotification" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-full bg-slate-800/90 text-white text-xs font-medium shadow-lg opacity-0 pointer-events-none transition-opacity duration-300">
+      Copied to clipboard!
+    </div>
+  </main>
+
+  <!-- =========================================================
+       3. LIGHTBOX MODAL FOR ENLARGING MEMORIES
+       ========================================================= -->
+  <div id="lightboxModal" class="fixed inset-0 z-50 hidden bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="relative max-w-lg w-full bg-white rounded-3xl p-3 sm:p-4 shadow-2xl border border-white animate-[fadeSlideUp_0.25s_ease]">
+      <button id="closeLightboxBtn" aria-label="Close photo" class="absolute -top-3 -right-3 w-9 h-9 rounded-full bg-white text-slate-700 shadow-md flex items-center justify-center text-lg font-medium hover:bg-blush-light transition-colors cursor-pointer">
+        ✕
+      </button>
+      <div class="rounded-2xl overflow-hidden bg-slate-100 aspect-[3/4] max-h-[72vh] flex items-center justify-center">
+        <img id="lightboxImg" src="" alt="Enlarged memory" class="w-full h-full object-contain" />
+      </div>
+      <p id="lightboxCaption" class="text-center font-serif text-base text-slate-700 mt-3 pb-1"></p>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       4. EMBEDDED JAVASCRIPT FOR INTERACTIVITY
+       ========================================================= -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      /* -------------------------------------------------------
+         A. ENVELOPE OPENING TRIGGER
+         ------------------------------------------------------- */
+      const openingScreen = document.getElementById('openingScreen');
+      const openEnvelopeBtn = document.getElementById('openEnvelopeBtn');
+      const mainExperience = document.getElementById('mainExperience');
+
+      openEnvelopeBtn.addEventListener('click', () => {
+        openEnvelopeBtn.classList.add('opening');
+        setTimeout(() => {
+          openingScreen.classList.add('opened');
+          mainExperience.classList.remove('hidden');
+          // Trigger a gentle celebratory petal sprinkle on entry
+          triggerFlowerShower(14);
+        }, 450);
+      });
+
+      /* -------------------------------------------------------
+         B. TAB NAVIGATION LOGIC
+         ------------------------------------------------------- */
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      const tabPanels = document.querySelectorAll('.tab-panel');
+
+      tabButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const target = btn.getAttribute('data-tab');
+
+          // Reset all buttons
+          tabButtons.forEach((b) => {
+            b.classList.remove('active', 'bg-blush-light', 'bg-babyblue-light', 'text-slate-800', 'shadow-sm');
+            b.classList.add('text-slate-600');
+          });
+
+          // Alternate soft pink & baby blue active pill styling
+          btn.classList.remove('text-slate-600');
+          btn.classList.add('active', 'text-slate-800', 'shadow-sm');
+          if (target === 'memories' || target === 'letter') {
+            btn.classList.add('bg-babyblue-light');
+          } else {
+            btn.classList.add('bg-blush-light');
+          }
+
+          // Switch active panel
+          tabPanels.forEach((panel) => {
+            panel.classList.remove('active');
+            if (panel.id === `tab-${target}`) {
+              panel.classList.add('active');
+            }
+          });
+        });
+      });
+
+      /* -------------------------------------------------------
+         C. PHOTO MEMORIES GALLERY (ALL 9 UPLOADED IMAGES)
+         ------------------------------------------------------- */
+      const memoriesData = [
+        {
+          file: '1794501898428.jpg',
+          caption: 'ganda ah'
+        
+        },
+        {
+          file: '1794501878653.jpg',
+          caption: 'wews'
+
+        },
+        {
+          file: 'Messenger_creation_734705D2-1BA2-483F-9C5F-8743FEF4EE2F.jpeg',
+          caption: 'tangkad mo naman busseng'
+        },
+        {
+          file: 'Messenger_creation_04E3D188-0016-43C8-A9EA-516929C6FA5E.jpeg',
+          caption: 'thank you sa painting gf ko, mwapss!!'
+        },
+        {
+          file: 'Messenger_creation_C0DD0D86-F1EC-4412-9B61-D0C0EC7BC3E7.jpeg',
+           caption: 'sarapppp hahahaha'
+          
+        },
+        {
+          file: 'Messenger_creation_143AD221-3D88-4435-9794-144DD002D78F.jpeg',
+           caption: 'museum yarn'
+        },
+        {
+          file: 'Messenger_creation_CC7E8610-E463-4F32-B6D1-33FDA6E21627.jpeg',
+           caption: 'ay shitt pogi, charr'
+          
+        },
+        {
+          file: 'Messenger_creation_130848FE-C812-4B48-BF21-A5A1AC110544.jpeg',
+           caption: 'pa kiss nga'
+          
+        },
+        {
+          file: 'Messenger_creation_7E25CA01-F28C-4809-89F1-44B7563B8D5E.jpeg',
+           caption: 'cutuiepie'
+          
+        }
+      ];
+
+      const galleryGrid = document.getElementById('galleryGrid');
+      const lightboxModal = document.getElementById('lightboxModal');
+      const lightboxImg = document.getElementById('lightboxImg');
+      const lightboxCaption = document.getElementById('lightboxCaption');
+      const closeLightboxBtn = document.getElementById('closeLightboxBtn');
+
+      memoriesData.forEach((item, index) => {
+        const card = document.createElement('button');
+        card.type = 'button';
+        // Alternate soft pink and baby blue subtle borders
+        const borderAccent = index % 2 === 0 ? 'border-blush/50' : 'border-babyblue/50';
+        card.className = `group bg-white rounded-2xl p-2.5 shadow-sm border ${borderAccent} hover:shadow-md transition-all duration-300 text-left cursor-pointer focus:outline-none focus:ring-2 focus:ring-blush`;
+
+        card.innerHTML = `
+          <div class="aspect-[4/5] w-full rounded-xl overflow-hidden bg-slate-50">
+            <img
+              src="${item.file}"
+              alt="${item.caption}"
+              loading="lazy"
+              onerror="this.src='https://placehold.co/400x500/FFE4EC/64748B?text=Our+Memory'"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+          </div>
+          <p class="text-xs sm:text-sm text-slate-600 font-medium mt-2.5 px-1 truncate">
+            ${item.caption}
+          </p>
+        `;
+
+        card.addEventListener('click', () => {
+          lightboxImg.src = item.file;
+          lightboxCaption.textContent = item.caption;
+          lightboxModal.classList.remove('hidden');
+        });
+
+        galleryGrid.appendChild(card);
+      });
+
+      // Lightbox close handlers
+      closeLightboxBtn.addEventListener('click', () => lightboxModal.classList.add('hidden'));
+      lightboxModal.addEventListener('click', (e) => {
+        if (e.target === lightboxModal) lightboxModal.classList.add('hidden');
+      });
+
+      /* -------------------------------------------------------
+         D. INTERACTIVE BOUQUET & FLOWER SHOWER
+         ------------------------------------------------------- */
+      const flowersData = [
+        { emoji: '🌸', label: 'Cherry Blossom' },
+        { emoji: '🩵', label: 'Baby Bluebell' },
+        { emoji: '🌷', label: 'Pink Tulip' },
+        { emoji: '🌼', label: 'White Daisy' },
+        { emoji: '🌺', label: 'Hibiscus' },
+        { emoji: '💐', label: 'Bouquet' }
+      ];
+
+      const flowerGarden = document.getElementById('flowerGarden');
+      const flowerShowerBtn = document.getElementById('flowerShowerBtn');
+
+      flowersData.forEach((flower, idx) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.setAttribute('aria-label', flower.label);
+        const bgTint = idx % 2 === 0 ? 'bg-blush-light/35 border-blush/50' : 'bg-babyblue-light/35 border-babyblue/50';
+        btn.className = `flower-btn ${bgTint} border rounded-2xl py-6 px-4 flex items-center justify-center cursor-pointer focus:outline-none`;
+
+        btn.innerHTML = `
+          <span class="flower-icon text-4xl sm:text-5xl">${flower.emoji}</span>
+        `;
+
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.flower-btn').forEach((b) => b.classList.remove('bloomed', 'ring-2', 'ring-blush'));
+          btn.classList.add('bloomed', 'ring-2', 'ring-blush');
+        });
+
+        flowerGarden.appendChild(btn);
+      });
+
+      function triggerFlowerShower(count = 26) {
+        const petals = ['🌸', '🌷', '🤍', '🩵', '✨', '💮'];
+        for (let i = 0; i < count; i++) {
+          const petal = document.createElement('span');
+          petal.className = 'falling-petal text-xl sm:text-2xl select-none';
+          petal.textContent = petals[Math.floor(Math.random() * petals.length)];
+          petal.style.left = `${Math.random() * 96}vw`;
+          petal.style.animationDuration = `${2.6 + Math.random() * 2.4}s`;
+          petal.style.animationDelay = `${Math.random() * 0.6}s`;
+          document.body.appendChild(petal);
+
+          setTimeout(() => {
+            petal.remove();
+          }, 5500);
+        }
+      }
+
+      flowerShowerBtn.addEventListener('click', () => triggerFlowerShower(28));
+
+      /* -------------------------------------------------------
+         E. LOVE LETTER FOLD/UNFOLD & PERSONALIZATION
+         ------------------------------------------------------- */
+      const toggleFoldBtn = document.getElementById('toggleFoldBtn');
+      const foldedLetterView = document.getElementById('foldedLetterView');
+      const unfoldedLetterView = document.getElementById('unfoldedLetterView');
+
+      const toggleEditBtn = document.getElementById('toggleEditBtn');
+      const letterReadMode = document.getElementById('letterReadMode');
+      const letterEditMode = document.getElementById('letterEditMode');
+      const cancelEditBtn = document.getElementById('cancelEditBtn');
+
+      const displayRecipient = document.getElementById('displayRecipient');
+      const displayDate = document.getElementById('displayDate');
+      const displayBody = document.getElementById('displayBody');
+      const displaySender = document.getElementById('displaySender');
+      const headerDateDisplay = document.getElementById('headerDateDisplay');
+
+      const inputRecipient = document.getElementById('inputRecipient');
+      const inputDate = document.getElementById('inputDate');
+      const inputBody = document.getElementById('inputBody');
+      const inputSender = document.getElementById('inputSender');
+
+      let isFolded = false;
+
+      function setFoldState(fold) {
+        isFolded = fold;
+        if (isFolded) {
+          unfoldedLetterView.classList.add('hidden');
+          foldedLetterView.classList.remove('hidden');
+          toggleFoldBtn.textContent = 'Unfold Letter';
+        } else {
+          foldedLetterView.classList.add('hidden');
+          unfoldedLetterView.classList.remove('hidden');
+          toggleFoldBtn.textContent = 'Fold Letter';
+        }
+      }
+
+      setFoldState(true); // letter starts folded
+      toggleFoldBtn.addEventListener('click', () => setFoldState(!isFolded));
+      foldedLetterView.addEventListener('click', () => setFoldState(false));
+
+      // Open Edit Form
+      toggleEditBtn.addEventListener('click', () => {
+        if (isFolded) setFoldState(false);
+        inputRecipient.value = displayRecipient.textContent.trim();
+        inputDate.value = displayDate.textContent.trim();
+        inputBody.value = displayBody.textContent.trim();
+        inputSender.value = displaySender.textContent.trim();
+
+        letterReadMode.classList.add('hidden');
+        letterEditMode.classList.remove('hidden');
+      });
+
+      cancelEditBtn.addEventListener('click', () => {
+        letterEditMode.classList.add('hidden');
+        letterReadMode.classList.remove('hidden');
+      });
+
+      // Save Personalized Letter
+      letterEditMode.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const newRecipient = inputRecipient.value.trim() || 'My Love';
+        const newDate = inputDate.value.trim() || 'Happy Anniversary';
+        const newBody = inputBody.value.trim();
+        const newSender = inputSender.value.trim() || 'Always Yours ♥';
+
+        displayRecipient.textContent = newRecipient;
+        document.querySelectorAll('.recipient-name').forEach((el) => (el.textContent = newRecipient));
+        displayDate.textContent = newDate;
+        headerDateDisplay.textContent = newDate;
+        if (newBody) displayBody.textContent = newBody;
+        displaySender.textContent = newSender;
+
+        letterEditMode.classList.add('hidden');
+        letterReadMode.classList.remove('hidden');
+        showToast('Love letter updated!');
+      });
+
+      // Copy Letter Text Helper (using execCommand for broad iframe/device support)
+      const copyShareBtn = document.getElementById('copyShareBtn');
+      const toastNotification = document.getElementById('toastNotification');
+
+      function showToast(msg) {
+        toastNotification.textContent = msg;
+        toastNotification.classList.remove('opacity-0');
+        setTimeout(() => {
+          toastNotification.classList.add('opacity-0');
+        }, 2400);
+      }
+
+      copyShareBtn.addEventListener('click', () => {
+        const textToCopy = `Dearest ${displayRecipient.textContent},\n\n${displayBody.textContent.trim()}\n\nForever yours,\n${displaySender.textContent}`;
+        const tempArea = document.createElement('textarea');
+        tempArea.value = textToCopy;
+        document.body.appendChild(tempArea);
+        tempArea.select();
+        try {
+          document.execCommand('copy');
+          showToast('Letter copied to clipboard!');
+        } catch (err) {
+          showToast('Unable to copy text');
+        }
+        document.body.removeChild(tempArea);
+      });
+    });
+  </script>
+</body>
+</html>
